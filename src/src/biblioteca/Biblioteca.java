@@ -353,8 +353,8 @@ public class Biblioteca {
             throw new BibliotecaException("Não foi possível criar a pasta de dados: " + pasta);
         }
         File temporario = new File(destino.getPath() + ".tmp");
-        try (ObjectOutputStream out = new ObjectOutputStream(
-                new BufferedOutputStream(new FileOutputStream(temporario)))) {
+        try (FileOutputStream arquivo = new FileOutputStream(temporario);
+             ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(arquivo))) {
             out.writeObject(materiais);
             out.writeObject(usuarios);
             out.writeObject(emprestimos);
@@ -378,7 +378,8 @@ public class Biblioteca {
         ArrayList<Material> lidosMateriais;
         ArrayList<Usuario> lidosUsuarios;
         ArrayList<Emprestimo> lidosEmprestimos;
-        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(origem)))) {
+        try (FileInputStream arquivo = new FileInputStream(origem);
+             ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(arquivo))) {
             lidosMateriais = (ArrayList<Material>) in.readObject();
             lidosUsuarios = (ArrayList<Usuario>) in.readObject();
             lidosEmprestimos = (ArrayList<Emprestimo>) in.readObject();
